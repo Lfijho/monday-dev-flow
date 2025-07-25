@@ -8,7 +8,7 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
+    --background: 247 247 250;
     --foreground: 222.2 84% 4.9%;
 
     --card: 0 0% 100%;
@@ -17,24 +17,63 @@ All colors MUST be HSL.
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    --primary: 225 73% 57%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 210 40% 96.1%;
+    --secondary: 240 5% 96%;
     --secondary-foreground: 222.2 47.4% 11.2%;
 
-    --muted: 210 40% 96.1%;
+    --muted: 240 5% 96%;
     --muted-foreground: 215.4 16.3% 46.9%;
 
-    --accent: 210 40% 96.1%;
+    --accent: 240 5% 96%;
     --accent-foreground: 222.2 47.4% 11.2%;
 
     --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --border: 220 13% 91%;
+    --input: 220 13% 91%;
+    --ring: 225 73% 57%;
+
+    /* Status colors */
+    --status-todo: 208 100% 97%;
+    --status-todo-foreground: 225 73% 57%;
+    --status-doing: 47 100% 93%;
+    --status-doing-foreground: 33 100% 50%;
+    --status-review: 54 91% 95%;
+    --status-review-foreground: 43 96% 56%;
+    --status-done: 143 85% 96%;
+    --status-done-foreground: 142 71% 45%;
+
+    /* Priority colors */
+    --priority-low: 162 100% 97%;
+    --priority-low-foreground: 162 73% 46%;
+    --priority-medium: 47 100% 93%;
+    --priority-medium-foreground: 33 100% 50%;
+    --priority-high: 21 100% 95%;
+    --priority-high-foreground: 21 90% 48%;
+    --priority-critical: 0 100% 97%;
+    --priority-critical-foreground: 0 84% 60%;
+
+    /* Monday-style colors */
+    --monday-blue: 225 73% 57%;
+    --monday-purple: 262 83% 58%;
+    --monday-green: 142 71% 45%;
+    --monday-orange: 33 100% 50%;
+    --monday-red: 0 84% 60%;
+    --monday-yellow: 43 96% 56%;
+
+    /* Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(225 73% 57%), hsl(262 83% 58%));
+    --gradient-success: linear-gradient(135deg, hsl(142 71% 45%), hsl(162 73% 46%));
+    --gradient-warning: linear-gradient(135deg, hsl(43 96% 56%), hsl(33 100% 50%));
+
+    /* Shadows */
+    --shadow-card: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+    --shadow-elevated: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    
+    --transition-smooth: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 
     --radius: 0.5rem;
 

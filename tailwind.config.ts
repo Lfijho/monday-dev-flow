@@ -61,6 +61,34 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
+				},
+				status: {
+					todo: 'hsl(var(--status-todo))',
+					'todo-foreground': 'hsl(var(--status-todo-foreground))',
+					doing: 'hsl(var(--status-doing))',
+					'doing-foreground': 'hsl(var(--status-doing-foreground))',
+					review: 'hsl(var(--status-review))',
+					'review-foreground': 'hsl(var(--status-review-foreground))',
+					done: 'hsl(var(--status-done))',
+					'done-foreground': 'hsl(var(--status-done-foreground))'
+				},
+				priority: {
+					low: 'hsl(var(--priority-low))',
+					'low-foreground': 'hsl(var(--priority-low-foreground))',
+					medium: 'hsl(var(--priority-medium))',
+					'medium-foreground': 'hsl(var(--priority-medium-foreground))',
+					high: 'hsl(var(--priority-high))',
+					'high-foreground': 'hsl(var(--priority-high-foreground))',
+					critical: 'hsl(var(--priority-critical))',
+					'critical-foreground': 'hsl(var(--priority-critical-foreground))'
+				},
+				monday: {
+					blue: 'hsl(var(--monday-blue))',
+					purple: 'hsl(var(--monday-purple))',
+					green: 'hsl(var(--monday-green))',
+					orange: 'hsl(var(--monday-orange))',
+					red: 'hsl(var(--monday-red))',
+					yellow: 'hsl(var(--monday-yellow))'
 				}
 			},
 			borderRadius: {
