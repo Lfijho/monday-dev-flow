@@ -7,9 +7,13 @@ import {
   BarChart3, 
   Plus,
   Filter,
-  Search
+  Search,
+  LogOut,
+  Settings
 } from "lucide-react";
 import { useBacklog } from "@/context/BacklogContext";
+import { useAuth } from "@/context/AuthContext";
+import { useToast } from "@/hooks/use-toast";
 import { ViewMode } from "@/types/backlog";
 
 const viewModes: { key: ViewMode; label: string; icon: React.ReactNode }[] = [
@@ -26,6 +30,16 @@ interface SidebarProps {
 
 export function Sidebar({ onOpenIdeaForm, onOpenFilters }: SidebarProps) {
   const { currentView, setCurrentView } = useBacklog();
+  const { user, logout } = useAuth();
+  const { toast } = useToast();
+
+  const handleLogout = () => {
+    logout();
+    toast({
+      title: "Logout realizado",
+      description: "Você foi desconectado com sucesso."
+    });
+  };
 
   return (
     <div className="w-64 bg-card border-r border-border h-full flex flex-col">
@@ -89,9 +103,40 @@ export function Sidebar({ onOpenIdeaForm, onOpenFilters }: SidebarProps) {
               <Search className="h-4 w-4 mr-2" />
               Buscar Itens
             </Button>
+            
+            <Button variant="ghost" className="w-full justify-start">
+              <Settings className="h-4 w-4 mr-2" />
+              Configurações
+            </Button>
+
+            <Button 
+              variant="ghost" 
+              className="w-full justify-start text-destructive hover:text-destructive hover:bg-destructive/10"
+              onClick={handleLogout}
+            >
+              <LogOut className="h-4 w-4 mr-2" />
+              Sair
+            </Button>
           </div>
         </div>
       </div>
+
+      {/* User Info */}
+      {user && (
+        <div className="p-4 border-t border-border">
+          <div className="flex items-center space-x-3">
+            <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
+              <span className="text-sm font-medium text-primary">
+                {user.name.charAt(0).toUpperCase()}
+              </span>
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="text-sm font-medium truncate">{user.name}</p>
+              <p className="text-xs text-muted-foreground truncate">{user.email}</p>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
