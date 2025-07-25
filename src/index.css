@@ -8,49 +8,49 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    --background: 247 247 250;
-    --foreground: 222.2 84% 4.9%;
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
 
-    --primary: 225 73% 57%;
-    --primary-foreground: 0 0% 100%;
+    --primary: 210 40% 98%;
+    --primary-foreground: 222.2 47.4% 11.2%;
 
-    --secondary: 240 5% 96%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
 
-    --muted: 240 5% 96%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
 
-    --accent: 240 5% 96%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 220 13% 91%;
-    --input: 220 13% 91%;
-    --ring: 225 73% 57%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 212.7 26.8% 83.9%;
 
     /* Status colors */
     --status-todo: 208 100% 97%;
     --status-todo-foreground: 225 73% 57%;
     --status-doing: 47 100% 93%;
     --status-doing-foreground: 33 100% 50%;
-    --status-review: 54 91% 95%;
-    --status-review-foreground: 43 96% 56%;
+    --status-review: 39 70% 90%;
+    --status-review-foreground: 39 70% 40%;
     --status-done: 143 85% 96%;
     --status-done-foreground: 142 71% 45%;
 
     /* Priority colors */
     --priority-low: 162 100% 97%;
     --priority-low-foreground: 162 73% 46%;
-    --priority-medium: 47 100% 93%;
-    --priority-medium-foreground: 33 100% 50%;
+    --priority-medium: 39 70% 90%;
+    --priority-medium-foreground: 39 70% 40%;
     --priority-high: 21 100% 95%;
     --priority-high-foreground: 21 90% 48%;
     --priority-critical: 0 100% 97%;
@@ -62,12 +62,12 @@ All colors MUST be HSL.
     --monday-green: 142 71% 45%;
     --monday-orange: 33 100% 50%;
     --monday-red: 0 84% 60%;
-    --monday-yellow: 43 96% 56%;
+    --monday-yellow: 39 70% 50%;
 
     /* Gradients */
     --gradient-primary: linear-gradient(135deg, hsl(225 73% 57%), hsl(262 83% 58%));
     --gradient-success: linear-gradient(135deg, hsl(142 71% 45%), hsl(162 73% 46%));
-    --gradient-warning: linear-gradient(135deg, hsl(43 96% 56%), hsl(33 100% 50%));
+    --gradient-warning: linear-gradient(135deg, hsl(39 70% 50%), hsl(33 80% 45%));
 
     /* Shadows */
     --shadow-card: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
@@ -77,7 +77,7 @@ All colors MUST be HSL.
 
     --radius: 0.5rem;
 
-    --sidebar-background: 0 0% 98%;
+    --sidebar-background: 240 5.9% 10%;
 
     --sidebar-foreground: 240 5.3% 26.1%;
 
