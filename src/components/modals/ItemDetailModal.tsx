@@ -6,10 +6,11 @@ import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { StatusBadge, PriorityBadge, TypeBadge } from "../backlog/StatusBadge";
 import { BacklogItem } from "@/types/backlog";
 import { useBacklog } from "@/context/BacklogContext";
-import { Calendar, MessageSquare, Target, Clock, Send } from "lucide-react";
+import { Calendar, MessageSquare, Target, Clock, Send, Edit } from "lucide-react";
 
 interface ItemDetailModalProps {
   item: BacklogItem | null;
@@ -18,8 +19,9 @@ interface ItemDetailModalProps {
 }
 
 export function ItemDetailModal({ item, isOpen, onClose }: ItemDetailModalProps) {
-  const { addComment } = useBacklog();
+  const { addComment, updateItemStatus } = useBacklog();
   const [newComment, setNewComment] = useState("");
+  const [isEditingStatus, setIsEditingStatus] = useState(false);
 
   if (!item) return null;
 
@@ -43,6 +45,17 @@ export function ItemDetailModal({ item, isOpen, onClose }: ItemDetailModalProps)
   const getInitials = (name: string) => {
     return name.split(' ').map(n => n[0]).join('').toUpperCase();
   };
+
+  const handleStatusChange = (newStatus: string) => {
+    updateItemStatus(item.id, newStatus as any);
+    setIsEditingStatus(false);
+  };
+
+  const sprintStatusOptions = [
+    { value: 'todo', label: 'Não iniciado' },
+    { value: 'doing', label: 'Em andamento' },
+    { value: 'testing', label: 'Necessário testes' }
+  ];
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -124,8 +137,35 @@ export function ItemDetailModal({ item, isOpen, onClose }: ItemDetailModalProps)
             {/* Status and Priority */}
             <div className="space-y-3">
               <div>
-                <label className="text-sm font-medium mb-1 block">Status</label>
-                <StatusBadge status={item.status} />
+                <div className="flex items-center justify-between mb-1">
+                  <label className="text-sm font-medium">Status</label>
+                  {item.groupId === 'current-sprint' && (
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => setIsEditingStatus(!isEditingStatus)}
+                      className="h-6 px-2"
+                    >
+                      <Edit className="h-3 w-3" />
+                    </Button>
+                  )}
+                </div>
+                {isEditingStatus && item.groupId === 'current-sprint' ? (
+                  <Select value={item.status} onValueChange={handleStatusChange}>
+                    <SelectTrigger className="w-full">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {sprintStatusOptions.map((option) => (
+                        <SelectItem key={option.value} value={option.value}>
+                          {option.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                ) : (
+                  <StatusBadge status={item.status} />
+                )}
               </div>
               
               <div>

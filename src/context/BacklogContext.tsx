@@ -69,46 +69,6 @@ const initialGroups: BacklogGroup[] = [
     items: []
   },
   {
-    id: 'prioritized-backlog',
-    title: 'Backlog Priorizado',
-    color: '#4ecdc4',
-    collapsed: false,
-    items: [
-      {
-        id: 'BUG-101',
-        title: "Erro de 'Incorrect string value' em campos memo",
-        description: "Usuários reportam `SQLSTATE[HY000]: General error: 1366` ao colar texto com caracteres especiais (setas, emojis). A causa é a codificação `latin1` em colunas `memo`. Plano de ação: migrar colunas críticas para `utf8mb4`.",
-        assignee: 'Gustavo', // Gustavo fica com o backend/DB
-        status: 'todo',
-        priority: 'high',
-        type: 'technical-debt',
-        estimate: 13, // Story points
-        epic: 'Infraestrutura DB',
-        groupId: 'backlog',
-        createdAt: '2025-07-18T14:30:00Z',
-        updatedAt: '2025-07-18T14:30:00Z',
-        comments: [],
-        tags: ['sql', 'utf-8', 'latin1', 'database']
-      },
-      {
-        id: 'BUG-102',
-        title: 'Dashboard não aparece para usuário com `dtexclusao` preenchido',
-        description: "Uma usuária não consegue ver o dashboard mesmo com permissão. Investigar se o registro dela na tabela `usuarios` está com a flag de soft-delete (`dtexclusao`) ativa indevidamente.",
-        assignee: 'Roger', // Roger fica com a parte de aplicação/regras
-        status: 'todo',
-        priority: 'medium',
-        type: 'bug',
-        estimate: 5,
-        epic: 'Dashboards',
-        groupId: 'backlog',
-        createdAt: '2025-07-22T09:00:00Z',
-        updatedAt: '2025-07-22T09:00:00Z',
-        comments: [],
-        tags: ['dashboard', 'permissão', 'dtexclusao', 'soft-delete']
-      }
-    ]
-  },
-  {
     id: 'current-sprint',
     title: 'Sprint Atual (25/07 - 08/08)',
     color: '#45b7d1',

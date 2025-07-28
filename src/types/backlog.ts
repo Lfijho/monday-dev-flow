@@ -1,4 +1,4 @@
-export type TaskStatus = 'todo' | 'doing' | 'review' | 'done';
+export type TaskStatus = 'todo' | 'doing' | 'testing' | 'review' | 'done';
 export type TaskPriority = 'low' | 'medium' | 'high' | 'critical';
 export type TaskType = 'bug' | 'feature' | 'improvement' | 'technical-debt';
 
