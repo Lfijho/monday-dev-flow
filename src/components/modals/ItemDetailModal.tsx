@@ -19,9 +19,10 @@ interface ItemDetailModalProps {
 }
 
 export function ItemDetailModal({ item, isOpen, onClose }: ItemDetailModalProps) {
-  const { addComment, updateItemStatus } = useBacklog();
+  const { addComment, updateItemStatus, updateItemAssignee } = useBacklog();
   const [newComment, setNewComment] = useState("");
   const [isEditingStatus, setIsEditingStatus] = useState(false);
+  const [isEditingAssignee, setIsEditingAssignee] = useState(false);
 
   if (!item) return null;
 
@@ -56,6 +57,18 @@ export function ItemDetailModal({ item, isOpen, onClose }: ItemDetailModalProps)
     { value: 'doing', label: 'Em andamento' },
     { value: 'testing', label: 'Necessário testes' }
   ];
+
+  const assigneeOptions = [
+    { value: 'Gustavo', label: 'Gustavo' },
+    { value: 'Rodrigo', label: 'Rodrigo' },
+    { value: 'Roger', label: 'Roger' },
+    { value: 'Time de Suporte', label: 'Time de Suporte' }
+  ];
+
+  const handleAssigneeChange = (newAssignee: string) => {
+    updateItemAssignee(item.id, newAssignee);
+    setIsEditingAssignee(false);
+  };
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -183,8 +196,33 @@ export function ItemDetailModal({ item, isOpen, onClose }: ItemDetailModalProps)
 
             {/* Assignment */}
             <div>
-              <label className="text-sm font-medium mb-2 block">Responsável</label>
-              {item.assignee ? (
+              <div className="flex items-center justify-between mb-2">
+                <label className="text-sm font-medium">Responsável</label>
+                {item.groupId === 'current-sprint' && (
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setIsEditingAssignee(!isEditingAssignee)}
+                    className="h-6 px-2"
+                  >
+                    <Edit className="h-3 w-3" />
+                  </Button>
+                )}
+              </div>
+              {isEditingAssignee && item.groupId === 'current-sprint' ? (
+                <Select value={item.assignee || ''} onValueChange={handleAssigneeChange}>
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Selecionar responsável" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {assigneeOptions.map((option) => (
+                      <SelectItem key={option.value} value={option.value}>
+                        {option.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              ) : item.assignee ? (
                 <div className="flex items-center gap-2">
                   <Avatar className="h-6 w-6">
                     <AvatarFallback className="text-xs bg-primary text-primary-foreground">
@@ -214,15 +252,6 @@ export function ItemDetailModal({ item, isOpen, onClose }: ItemDetailModalProps)
                 </div>
               )}
               
-              {item.estimate && (
-                <div>
-                  <label className="text-sm font-medium mb-1 block flex items-center gap-1">
-                    <Target className="h-3 w-3" />
-                    Estimativa
-                  </label>
-                  <p className="text-sm text-foreground">{item.estimate} pontos</p>
-                </div>
-              )}
               
               {item.epic && (
                 <div>

@@ -26,6 +26,7 @@ interface BacklogContextType {
   addItemFromIdea: (idea: IdeaSubmission) => void;
   addItemFromSupportBacklog: (submission: any) => void;
   updateItemStatus: (itemId: string, newStatus: TaskStatus) => void;
+  updateItemAssignee: (itemId: string, newAssignee: string) => void;
   addComment: (itemId: string, comment: string, author: string) => void;
   updateItem: (itemId: string, updates: Partial<BacklogItem>) => void;
   deleteItem: (itemId: string, softDelete?: boolean) => void;
@@ -249,6 +250,17 @@ export function BacklogProvider({ children }: { children: ReactNode }) {
     })));
   };
 
+  const updateItemAssignee = (itemId: string, newAssignee: string) => {
+    setGroups(prev => prev.map(group => ({
+      ...group,
+      items: group.items.map(item =>
+        item.id === itemId
+          ? { ...item, assignee: newAssignee, updatedAt: new Date().toISOString() }
+          : item
+      )
+    })));
+  };
+
   const addComment = (itemId: string, comment: string, author: string = 'Usuário Atual') => {
    
     const newComment = {
@@ -308,6 +320,7 @@ export function BacklogProvider({ children }: { children: ReactNode }) {
       addItemFromIdea,
       addItemFromSupportBacklog,
       updateItemStatus,
+      updateItemAssignee,
       addComment,
       updateItem,
       deleteItem,
