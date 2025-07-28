@@ -119,7 +119,7 @@ export function ItemDetailModal({ item, isOpen, onClose }: ItemDetailModalProps)
               <div className="space-y-3">
                 {item.comments.length === 0 ? (
                   <p className="text-muted-foreground text-sm italic">
-                    Nenhum comentário ainda. Seja o primeiro a comentar!
+                    Nenhum comentário ainda. 
                   </p>
                 ) : (
                   item.comments.map((comment) => (

@@ -173,14 +173,14 @@ export function SupportBacklogForm({ onSuccess, onCancel }: SupportBacklogFormPr
 
               <div className="space-y-2">
                 <Label htmlFor="ticketId" className="text-sm font-medium">
-                  ID do Ticket de Suporte
+                  Número do chamado - Movidesk
                 </Label>
                 <Input
                   id="ticketId"
                   type="text"
                   value={formData.ticketId}
                   onChange={(e) => setFormData(prev => ({ ...prev, ticketId: e.target.value }))}
-                  placeholder="Ex: SUPP-1234 (opcional)"
+                  placeholder="Ex: 4444"
                 />
               </div>
 
@@ -222,6 +222,14 @@ export function SupportBacklogForm({ onSuccess, onCancel }: SupportBacklogFormPr
               <div className="md:col-span-2 space-y-2">
                 <Label className="text-sm font-medium">
                   Documento de Evidência
+                  <a 
+                    href="https://docs.google.com/document/d/1RMnrG8T7zHdeO7n2EXiW1ketfZyRpzj2WaGK_i4U9is/edit?usp=sharing"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-primary hover:underline ml-1"
+                  >
+                     ( Ver padrão de evidência ) 
+                  </a>
                 </Label>
                 <div className="border-2 border-dashed border-muted rounded-lg p-4">
                   {!formData.evidenceFile ? (
