@@ -7,6 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { useBacklog } from "@/context/BacklogContext";
 import { useToast } from "@/hooks/use-toast";
 import { HeadsetIcon, Send, Upload, FileText } from "lucide-react";
+import iiLexLogo from "/iilex.png";
 
 interface SupportRequestForm {
   taskName: string;
@@ -86,8 +87,8 @@ export function IdeaSubmissionForm({ onClose }: IdeaSubmissionFormProps) {
     <Card className="w-full max-w-2xl mx-auto shadow-lg border-0">
       <CardHeader className="bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-t-lg">
         <div className="flex items-center gap-3">
-          <div className="h-10 w-10 rounded-full bg-white/20 flex items-center justify-center">
-            <HeadsetIcon className="h-5 w-5" />
+          <div className="h-10 w-10 rounded-full bg-white/20 flex items-center justify-center p-2">
+            <img src={iiLexLogo} alt="iiLex" className="h-6 w-6 object-contain" />
           </div>
           <div>
             <CardTitle className="text-xl">Solicitação Backlog Suporte</CardTitle>
