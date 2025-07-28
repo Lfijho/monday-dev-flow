@@ -5,6 +5,7 @@ import { Sidebar } from "./layout/Sidebar";
 import { BacklogTable } from "./backlog/BacklogTable";
 import { KanbanView } from "./backlog/KanbanView";
 import { IdeaSubmissionForm } from "./forms/IdeaSubmissionForm";
+import { SupportBacklogForm } from "./forms/SupportBacklogForm";
 import { ItemDetailModal } from "./modals/ItemDetailModal";
 import { BacklogProvider, useBacklog } from "@/context/BacklogContext";
 import { BacklogItem } from "@/types/backlog";
@@ -13,6 +14,7 @@ import { Calendar, BarChart3 } from "lucide-react";
 function BacklogPlatformContent() {
   const { currentView } = useBacklog();
   const [isIdeaFormOpen, setIsIdeaFormOpen] = useState(false);
+  const [isSupportFormOpen, setIsSupportFormOpen] = useState(false);
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState<BacklogItem | null>(null);
 
@@ -52,6 +54,7 @@ function BacklogPlatformContent() {
       {/* Sidebar */}
       <Sidebar 
         onOpenIdeaForm={() => setIsIdeaFormOpen(true)}
+        onOpenSupportForm={() => setIsSupportFormOpen(true)}
         onOpenFilters={() => setIsFiltersOpen(true)}
       />
 
@@ -77,6 +80,13 @@ function BacklogPlatformContent() {
                 Exportar
               </Button>
               <Button 
+                onClick={() => setIsSupportFormOpen(true)}
+                variant="outline"
+                className="border-orange-200 text-orange-600 hover:bg-orange-50"
+              >
+                Backlog Suporte
+              </Button>
+              <Button 
                 onClick={() => setIsIdeaFormOpen(true)}
                 className="bg-gradient-to-r from-monday-blue to-monday-purple hover:opacity-90"
               >
@@ -96,6 +106,16 @@ function BacklogPlatformContent() {
       <Dialog open={isIdeaFormOpen} onOpenChange={setIsIdeaFormOpen}>
         <DialogContent className="max-w-2xl">
           <IdeaSubmissionForm onClose={() => setIsIdeaFormOpen(false)} />
+        </DialogContent>
+      </Dialog>
+
+      {/* Support Backlog Modal */}
+      <Dialog open={isSupportFormOpen} onOpenChange={setIsSupportFormOpen}>
+        <DialogContent className="max-w-2xl">
+          <SupportBacklogForm 
+            onSuccess={() => setIsSupportFormOpen(false)}
+            onCancel={() => setIsSupportFormOpen(false)}
+          />
         </DialogContent>
       </Dialog>
 

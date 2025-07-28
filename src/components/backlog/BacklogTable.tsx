@@ -6,15 +6,16 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { StatusBadge, PriorityBadge, TypeBadge } from "./StatusBadge";
 import { useBacklog } from "@/context/BacklogContext";
 import { BacklogGroup, BacklogItem } from "@/types/backlog";
-import { ChevronDown, ChevronRight, MessageSquare, Calendar, Target } from "lucide-react";
+import { ChevronDown, ChevronRight, MessageSquare, Calendar, Target, ArrowRight, CheckCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { toast } from "sonner";
 
 interface BacklogTableProps {
   onItemClick: (item: BacklogItem) => void;
 }
 
 export function BacklogTable({ onItemClick }: BacklogTableProps) {
-  const { groups, setGroups } = useBacklog();
+  const { groups, setGroups, moveItemToGroup } = useBacklog();
   const [expandedGroups, setExpandedGroups] = useState<Set<string>>(
     new Set(groups.filter(g => !g.collapsed).map(g => g.id))
   );
@@ -41,6 +42,52 @@ export function BacklogTable({ onItemClick }: BacklogTableProps) {
     return name.split(' ').map(n => n[0]).join('').toUpperCase();
   };
 
+  const handleMoveToSprint = (item: BacklogItem, e: React.MouseEvent) => {
+    e.stopPropagation();
+    moveItemToGroup(item.id, 'current-sprint', 'doing');
+    toast.success(`"${item.title}" movida para Sprint Atual`);
+  };
+
+  const handleCompleteTask = (item: BacklogItem, e: React.MouseEvent) => {
+    e.stopPropagation();
+    moveItemToGroup(item.id, 'done', 'done');
+    toast.success(`"${item.title}" marcada como concluída`);
+  };
+
+  const getActionButton = (item: BacklogItem) => {
+    // Botão "Mover para Sprint" - aparece em Backlog Priorizado e Backlog de Suporte
+    if (item.groupId === 'prioritized-backlog' || item.groupId === 'support-backlog') {
+      return (
+        <Button
+          size="sm"
+          variant="outline"
+          onClick={(e) => handleMoveToSprint(item, e)}
+          className="flex items-center gap-1 text-xs"
+        >
+          <ArrowRight className="h-3 w-3" />
+          Mover para Sprint
+        </Button>
+      );
+    }
+    
+    // Botão "Concluir Tarefa" - aparece em Sprint Atual
+    if (item.groupId === 'current-sprint') {
+      return (
+        <Button
+          size="sm"
+          variant="outline"
+          onClick={(e) => handleCompleteTask(item, e)}
+          className="flex items-center gap-1 text-xs text-green-600 border-green-200 hover:bg-green-50"
+        >
+          <CheckCircle className="h-3 w-3" />
+          Concluir
+        </Button>
+      );
+    }
+    
+    return null;
+  };
+
   return (
     <div className="w-full">
       <Table>
@@ -54,7 +101,7 @@ export function BacklogTable({ onItemClick }: BacklogTableProps) {
             <TableHead className="w-[120px] font-semibold">Data Entrega</TableHead>
             <TableHead className="w-[100px] font-semibold">Pontos</TableHead>
             <TableHead className="w-[150px] font-semibold">Épico</TableHead>
-            <TableHead className="w-[80px] font-semibold">Ações</TableHead>
+            <TableHead className="w-[150px] font-semibold">Ações</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -67,6 +114,7 @@ export function BacklogTable({ onItemClick }: BacklogTableProps) {
               onItemClick={onItemClick}
               formatDate={formatDate}
               getInitials={getInitials}
+              getActionButton={getActionButton}
             />
           ))}
         </TableBody>
@@ -82,6 +130,7 @@ interface TableRowGroupProps {
   onItemClick: (item: BacklogItem) => void;
   formatDate: (date?: string) => string;
   getInitials: (name?: string) => string;
+  getActionButton: (item: BacklogItem) => React.ReactNode;
 }
 
 function TableRowGroup({ 
@@ -90,7 +139,8 @@ function TableRowGroup({
   onToggle, 
   onItemClick, 
   formatDate, 
-  getInitials 
+  getInitials,
+  getActionButton
 }: TableRowGroupProps) {
   return (
     <>
@@ -183,13 +233,14 @@ function TableRowGroup({
           </TableCell>
           
           <TableCell>
-            <div className="flex items-center gap-1">
+            <div className="flex items-center gap-2">
               {item.comments.length > 0 && (
                 <Badge variant="outline" className="text-xs">
                   <MessageSquare className="h-3 w-3 mr-1" />
                   {item.comments.length}
                 </Badge>
               )}
+              {getActionButton(item)}
             </div>
           </TableCell>
         </TableRow>

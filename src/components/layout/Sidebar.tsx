@@ -25,10 +25,11 @@ const viewModes: { key: ViewMode; label: string; icon: React.ReactNode }[] = [
 
 interface SidebarProps {
   onOpenIdeaForm: () => void;
+  onOpenSupportForm: () => void;
   onOpenFilters: () => void;
 }
 
-export function Sidebar({ onOpenIdeaForm, onOpenFilters }: SidebarProps) {
+export function Sidebar({ onOpenIdeaForm, onOpenSupportForm, onOpenFilters }: SidebarProps) {
   const { currentView, setCurrentView } = useBacklog();
   const { user, logout } = useAuth();
   const { toast } = useToast();
@@ -58,6 +59,15 @@ export function Sidebar({ onOpenIdeaForm, onOpenFilters }: SidebarProps) {
           >
             <Plus className="h-4 w-4 mr-2" />
             Nova Ideia
+          </Button>
+          
+          <Button 
+            onClick={onOpenSupportForm}
+            variant="outline"
+            className="w-full border-orange-200 text-orange-600 hover:bg-orange-50"
+          >
+            <Plus className="h-4 w-4 mr-2" />
+            Backlog Suporte
           </Button>
           
           <Button 

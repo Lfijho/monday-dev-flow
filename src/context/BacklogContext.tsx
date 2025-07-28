@@ -24,10 +24,12 @@ interface BacklogContextType {
   filters: FilterState;
   setFilters: React.Dispatch<React.SetStateAction<FilterState>>;
   addItemFromIdea: (idea: IdeaSubmission) => void;
+  addItemFromSupportBacklog: (submission: any) => void;
   updateItemStatus: (itemId: string, newStatus: TaskStatus) => void;
   addComment: (itemId: string, comment: string, author: string) => void;
   updateItem: (itemId: string, updates: Partial<BacklogItem>) => void;
-  deleteItem: (itemId: string, softDelete?: boolean) => void; 
+  deleteItem: (itemId: string, softDelete?: boolean) => void;
+  moveItemToGroup: (itemId: string, targetGroupId: string, newStatus?: TaskStatus) => void;
 }
 
 const BacklogContext = createContext<BacklogContextType | undefined>(undefined);
@@ -60,8 +62,15 @@ const initialGroups: BacklogGroup[] = [
     ]
   },
   {
-    id: 'backlog',
-    title: 'Backlog (Bugs e Débitos Técnicos)',
+    id: 'support-backlog',
+    title: 'Backlog de Suporte',
+    color: '#f39c12',
+    collapsed: false,
+    items: []
+  },
+  {
+    id: 'prioritized-backlog',
+    title: 'Backlog Priorizado',
     color: '#4ecdc4',
     collapsed: false,
     items: [
@@ -176,7 +185,6 @@ export function BacklogProvider({ children }: { children: ReactNode }) {
   const [filters, setFilters] = useState<FilterState>({});
 
   const addItemFromIdea = (idea: IdeaSubmission) => {
-   
     const sanitizedDescription = idea.description.replace(/[➢✔➔]/g, ''); 
 
     const newItem: BacklogItem = {
@@ -205,6 +213,69 @@ export function BacklogProvider({ children }: { children: ReactNode }) {
         ? { ...group, items: [newItem, ...group.items] }
         : group
     ));
+  };
+
+  const addItemFromSupportBacklog = (submission: any) => {
+    const newItem: BacklogItem = {
+      id: `SUPP-${Date.now()}`,
+      title: submission.title,
+      description: submission.description,
+      assignee: undefined,
+      status: 'todo',
+      priority: submission.impact as any,
+      type: 'bug',
+      groupId: 'support-backlog',
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      comments: [
+        {
+          id: Date.now().toString() + '-comment',
+          author: `Cliente: ${submission.department || 'INTERNO'}`,
+          content: `Solicitação de suporte. Link: ${submission.link}${submission.ticketId ? ` | Ticket: ${submission.ticketId}` : ''}`,
+          createdAt: new Date().toISOString()
+        }
+      ]
+    };
+
+    setGroups(prev => prev.map(group =>
+      group.id === 'support-backlog'
+        ? { ...group, items: [newItem, ...group.items] }
+        : group
+    ));
+  };
+
+  const moveItemToGroup = (itemId: string, targetGroupId: string, newStatus?: TaskStatus) => {
+    setGroups(prev => {
+      let itemToMove: BacklogItem | null = null;
+      
+      // Find and remove item from current group
+      const updatedGroups = prev.map(group => ({
+        ...group,
+        items: group.items.filter(item => {
+          if (item.id === itemId) {
+            itemToMove = { 
+              ...item, 
+              groupId: targetGroupId,
+              status: newStatus || item.status,
+              updatedAt: new Date().toISOString()
+            };
+            return false;
+          }
+          return true;
+        })
+      }));
+
+      // Add item to target group
+      if (itemToMove) {
+        return updatedGroups.map(group =>
+          group.id === targetGroupId
+            ? { ...group, items: [itemToMove!, ...group.items] }
+            : group
+        );
+      }
+      
+      return updatedGroups;
+    });
   };
 
   const updateItemStatus = (itemId: string, newStatus: TaskStatus) => {
@@ -275,10 +346,12 @@ export function BacklogProvider({ children }: { children: ReactNode }) {
       filters,
       setFilters,
       addItemFromIdea,
+      addItemFromSupportBacklog,
       updateItemStatus,
       addComment,
       updateItem,
-      deleteItem
+      deleteItem,
+      moveItemToGroup
     }}>
       {children}
     </BacklogContext.Provider>
