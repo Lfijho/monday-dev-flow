@@ -34,16 +34,6 @@ function BacklogPlatformContent() {
             </div>
           </div>
         );
-      case 'timeline':
-        return (
-          <div className="flex items-center justify-center h-96 text-muted-foreground">
-            <div className="text-center">
-              <BarChart3 className="h-12 w-12 mx-auto mb-4" />
-              <h3 className="text-lg font-medium mb-2">Visão Timeline</h3>
-              <p>Em desenvolvimento - Aqui será exibido o cronograma das tarefas</p>
-            </div>
-          </div>
-        );
       default:
         return <BacklogTable onItemClick={setSelectedItem} />;
     }
@@ -68,7 +58,6 @@ function BacklogPlatformContent() {
                 {currentView === 'table' && 'Visão Tabela'}
                 {currentView === 'kanban' && 'Quadro Kanban'}
                 {currentView === 'calendar' && 'Calendário'}
-                {currentView === 'timeline' && 'Timeline do Projeto'}
               </h1>
               <p className="text-muted-foreground mt-1">
                 Gerencie seu backlog de desenvolvimento de forma visual e colaborativa
@@ -76,9 +65,6 @@ function BacklogPlatformContent() {
             </div>
             
             <div className="flex gap-2">
-              <Button variant="outline">
-                Exportar
-              </Button>
               <Button 
                 onClick={() => setIsSupportFormOpen(true)}
                 variant="outline"
