@@ -20,7 +20,6 @@ const viewModes: { key: ViewMode; label: string; icon: React.ReactNode }[] = [
   { key: 'table', label: 'Tabela', icon: <Table2 className="h-4 w-4" /> },
   { key: 'kanban', label: 'Kanban', icon: <LayoutGrid className="h-4 w-4" /> },
   { key: 'calendar', label: 'Calendário', icon: <Calendar className="h-4 w-4" /> },
-  { key: 'timeline', label: 'Timeline', icon: <BarChart3 className="h-4 w-4" /> },
 ];
 
 interface SidebarProps {
