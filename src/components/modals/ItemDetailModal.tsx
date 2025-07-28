@@ -8,9 +8,9 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { StatusBadge, PriorityBadge, TypeBadge } from "../backlog/StatusBadge";
-import { BacklogItem } from "@/types/backlog";
+import { BacklogItem, TaskStatus } from "@/types/backlog";
 import { useBacklog } from "@/context/BacklogContext";
-import { Calendar, MessageSquare, Target, Clock, Send, Edit } from "lucide-react";
+import { Calendar, MessageSquare, Clock, Send, Edit } from "lucide-react";
 
 interface ItemDetailModalProps {
   item: BacklogItem | null;
@@ -48,7 +48,7 @@ export function ItemDetailModal({ item, isOpen, onClose }: ItemDetailModalProps)
   };
 
   const handleStatusChange = (newStatus: string) => {
-    updateItemStatus(item.id, newStatus as any);
+    updateItemStatus(item.id, newStatus as TaskStatus);
     setIsEditingStatus(false);
   };
 
@@ -238,7 +238,7 @@ export function ItemDetailModal({ item, isOpen, onClose }: ItemDetailModalProps)
 
             <Separator />
 
-            {/* Dates and Estimate */}
+            {/* Dates */}
             <div className="space-y-3">
               {item.dueDate && (
                 <div>

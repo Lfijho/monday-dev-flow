@@ -5,7 +5,7 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { StatusBadge, PriorityBadge, TypeBadge } from "./StatusBadge";
 import { useBacklog } from "@/context/BacklogContext";
 import { BacklogItem, TaskStatus } from "@/types/backlog";
-import { Calendar, MessageSquare, Target, Plus } from "lucide-react";
+import { Calendar, MessageSquare, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 interface KanbanViewProps {
@@ -162,7 +162,7 @@ function KanbanCard({
 
         {/* Meta information */}
         <div className="space-y-2">
-          {/* Due date and estimate */}
+          {/* Due date */}
           <div className="flex items-center justify-between text-xs text-muted-foreground">
             {item.dueDate && (
               <div className="flex items-center gap-1">
@@ -170,15 +170,12 @@ function KanbanCard({
                 {formatDate(item.dueDate)}
               </div>
             )}
-            {item.estimate && (
-              <div className="flex items-center gap-1">
-                <Target className="h-3 w-3" />
-                {item.estimate}pt
-              </div>
-            )}
+            <div className="flex items-center gap-1">
+              <MessageSquare className="h-3 w-3" />
+              {item.comments.length}
+            </div>
           </div>
-
-          {/* Assignee and comments */}
+          {/* Assignee */}
           <div className="flex items-center justify-between">
             {item.assignee ? (
               <div className="flex items-center gap-2">
@@ -192,14 +189,7 @@ function KanbanCard({
                 </span>
               </div>
             ) : (
-              <div className="h-5" /> // Spacer
-            )}
-
-            {item.comments.length > 0 && (
-              <div className="flex items-center gap-1 text-xs text-muted-foreground">
-                <MessageSquare className="h-3 w-3" />
-                {item.comments.length}
-              </div>
+              <div className="h-5" />
             )}
           </div>
         </div>

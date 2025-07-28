@@ -11,7 +11,6 @@ export interface BacklogItem {
   priority: TaskPriority;
   type: TaskType;
   dueDate?: string;
-  estimate?: number;
   epic?: string;
   groupId: string;
   createdAt: string;

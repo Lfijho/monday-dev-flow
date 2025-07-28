@@ -6,7 +6,7 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { StatusBadge, PriorityBadge, TypeBadge } from "./StatusBadge";
 import { useBacklog } from "@/context/BacklogContext";
 import { BacklogGroup, BacklogItem } from "@/types/backlog";
-import { ChevronDown, ChevronRight, MessageSquare, Calendar, Target, ArrowRight, CheckCircle } from "lucide-react";
+import { ChevronDown, ChevronRight, MessageSquare, Calendar, ArrowRight, CheckCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 
@@ -98,10 +98,8 @@ export function BacklogTable({ onItemClick }: BacklogTableProps) {
             <TableHead className="w-[130px] font-semibold">Status</TableHead>
             <TableHead className="w-[120px] font-semibold">Prioridade</TableHead>
             <TableHead className="w-[140px] font-semibold">Tipo</TableHead>
-            <TableHead className="w-[120px] font-semibold">Data Entrega</TableHead>
-            <TableHead className="w-[100px] font-semibold">Pontos</TableHead>
-            <TableHead className="w-[150px] font-semibold">Épico</TableHead>
-            <TableHead className="w-[150px] font-semibold">Ações</TableHead>
+            <TableHead className="w-[120px] font-semibold">Data de Entrega</TableHead>
+            <TableHead className="w-[80px] font-semibold">Ações</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -146,7 +144,7 @@ function TableRowGroup({
     <>
       {/* Group Header Row */}
       <TableRow className="bg-muted/30 hover:bg-muted/50 border-l-4" style={{ borderLeftColor: group.color }}>
-        <TableCell colSpan={9}>
+        <TableCell colSpan={7}>
           <Button
             variant="ghost"
             onClick={onToggle}
@@ -214,35 +212,21 @@ function TableRowGroup({
             <TypeBadge type={item.type} />
           </TableCell>
           
-          <TableCell>
-            <div className="flex items-center gap-1 text-sm">
-              <Calendar className="h-3 w-3 text-muted-foreground" />
-              {formatDate(item.dueDate)}
-            </div>
-          </TableCell>
-          
-          <TableCell>
-            <div className="flex items-center gap-1">
-              <Target className="h-3 w-3 text-muted-foreground" />
-              <span className="text-sm">{item.estimate || '-'}</span>
-            </div>
-          </TableCell>
-          
-          <TableCell>
-            <span className="text-sm text-muted-foreground">{item.epic || '-'}</span>
-          </TableCell>
-          
-          <TableCell>
-            <div className="flex items-center gap-2">
-              {item.comments.length > 0 && (
-                <Badge variant="outline" className="text-xs">
-                  <MessageSquare className="h-3 w-3 mr-1" />
-                  {item.comments.length}
-                </Badge>
-              )}
-              {getActionButton(item)}
-            </div>
-          </TableCell>
+            <TableCell>
+              {item.dueDate ? new Date(item.dueDate).toLocaleDateString('pt-BR') : '-'}
+            </TableCell>
+            
+            <TableCell>
+              <div className="flex items-center gap-2">
+                {item.comments.length > 0 && (
+                  <Badge variant="outline" className="text-xs">
+                    <MessageSquare className="h-3 w-3 mr-1" />
+                    {item.comments.length}
+                  </Badge>
+                )}
+                {getActionButton(item)}
+              </div>
+            </TableCell>
         </TableRow>
       ))}
     </>
