@@ -200,7 +200,7 @@ export function IdeaSubmissionForm({ onClose }: IdeaSubmissionFormProps) {
               </label>
             </div>
             <p className="text-sm text-muted-foreground">
-              Upload do arquivo de evidência que futuramente será armazenado no Supabase
+              Upload do arquivo de evidência.
             </p>
           </div>
 
