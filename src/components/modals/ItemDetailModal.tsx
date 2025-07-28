@@ -25,7 +25,7 @@ export function ItemDetailModal({ item, isOpen, onClose }: ItemDetailModalProps)
 
   const handleAddComment = () => {
     if (newComment.trim()) {
-      addComment(item.id, newComment.trim());
+      addComment(item.id, newComment.trim(), 'Usuário Atual');
       setNewComment("");
     }
   };

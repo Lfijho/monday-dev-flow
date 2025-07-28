@@ -10,6 +10,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { useAuth } from '@/context/AuthContext';
 import { useToast } from '@/hooks/use-toast';
 
+
 const loginSchema = z.object({
   email: z.string().email('Email inválido'),
   password: z.string().min(6, 'Senha deve ter pelo menos 6 caracteres')
@@ -56,7 +57,14 @@ export const LoginForm = ({ onToggleMode }: LoginFormProps) => {
 
   return (
     <Card className="w-full max-w-md mx-auto">
-      <CardHeader className="space-y-1">
+      <CardHeader className="space-y-4">
+        <div className="flex justify-center">
+          <img 
+            src="/lovable-uploads/a74dee3e-cebf-427b-ae78-be9537d82318.png" 
+            alt="iiLex Logo" 
+            className="h-16 w-auto object-contain"
+          />
+        </div>
         <CardTitle className="text-2xl font-bold text-center">
           Entrar na Plataforma
         </CardTitle>

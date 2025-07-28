@@ -18,6 +18,8 @@ export interface BacklogItem {
   updatedAt: string;
   comments: Comment[];
   subtasks?: BacklogItem[];
+  tags?: string[];
+  softDeleted?: boolean;
 }
 
 export interface Comment {
