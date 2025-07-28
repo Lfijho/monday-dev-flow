@@ -3,12 +3,17 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useBacklog } from "@/context/BacklogContext";
 import { useToast } from "@/hooks/use-toast";
-import { IdeaSubmission } from "@/types/backlog";
-import { Lightbulb, Send } from "lucide-react";
+import { HeadsetIcon, Send, Upload, FileText } from "lucide-react";
+
+interface SupportRequestForm {
+  taskName: string;
+  client: string;
+  link: string;
+  evidenceFile: File | null;
+}
 
 interface IdeaSubmissionFormProps {
   onClose: () => void;
@@ -18,19 +23,24 @@ export function IdeaSubmissionForm({ onClose }: IdeaSubmissionFormProps) {
   const { addItemFromIdea } = useBacklog();
   const { toast } = useToast();
   
-  const [formData, setFormData] = useState<IdeaSubmission>({
-    title: '',
-    description: '',
-    department: '',
-    impact: 'medium'
+  const [formData, setFormData] = useState<SupportRequestForm>({
+    taskName: '',
+    client: '',
+    link: '',
+    evidenceFile: null
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0] || null;
+    setFormData({ ...formData, evidenceFile: file });
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!formData.title || !formData.description || !formData.department) {
+    if (!formData.taskName || !formData.client || !formData.link) {
       toast({
         title: "Campos obrigatórios",
         description: "Por favor, preencha todos os campos obrigatórios.",
@@ -45,17 +55,25 @@ export function IdeaSubmissionForm({ onClose }: IdeaSubmissionFormProps) {
       // Simular delay de API
       await new Promise(resolve => setTimeout(resolve, 1000));
       
-      addItemFromIdea(formData);
+      // Converter para formato compatível com o sistema existente
+      const ideaData = {
+        title: formData.taskName,
+        description: `Cliente: ${formData.client}\nLink: ${formData.link}\n${formData.evidenceFile ? `Arquivo: ${formData.evidenceFile.name}` : ''}`,
+        department: 'suporte',
+        impact: 'medium' as const
+      };
+      
+      addItemFromIdea(ideaData);
       
       toast({
-        title: "Ideia enviada com sucesso! 🎉",
-        description: "Sua ideia foi adicionada ao backlog e será analisada pela equipe de desenvolvimento.",
+        title: "Solicitação enviada com sucesso! 🎉",
+        description: "Sua solicitação foi adicionada ao backlog e será analisada pela equipe de suporte.",
       });
       
       onClose();
     } catch (error) {
       toast({
-        title: "Erro ao enviar ideia",
+        title: "Erro ao enviar solicitação",
         description: "Ocorreu um erro ao processar sua solicitação. Tente novamente.",
         variant: "destructive"
       });
@@ -66,15 +84,23 @@ export function IdeaSubmissionForm({ onClose }: IdeaSubmissionFormProps) {
 
   return (
     <Card className="w-full max-w-2xl mx-auto shadow-lg border-0">
-      <CardHeader className="bg-gradient-to-r from-monday-blue to-monday-purple text-white rounded-t-lg">
+      <CardHeader className="bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-t-lg">
         <div className="flex items-center gap-3">
           <div className="h-10 w-10 rounded-full bg-white/20 flex items-center justify-center">
-            <Lightbulb className="h-5 w-5" />
+            <HeadsetIcon className="h-5 w-5" />
           </div>
           <div>
-            <CardTitle className="text-xl">Nova Ideia de Produto</CardTitle>
+            <CardTitle className="text-xl">Solicitação Backlog Suporte</CardTitle>
             <CardDescription className="text-white/80">
-              Compartilhe sua ideia para melhorar nosso produto
+              Enviar evidência conforme o padrão do link: 
+              <a 
+                href="https://docs.google.com/document/d/1RMnrG8T7zHdeO7n2EXiW1ketfZyRpzj2WaGK_i4U9is/edit?usp=sharing" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-blue-200 hover:text-white underline ml-1"
+              >
+                Ver documentação
+              </a>
             </CardDescription>
           </div>
         </div>
@@ -83,94 +109,98 @@ export function IdeaSubmissionForm({ onClose }: IdeaSubmissionFormProps) {
       <CardContent className="p-6">
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="space-y-2">
-            <Label htmlFor="title" className="text-sm font-medium">
-              Título da Ideia *
+            <Label htmlFor="taskName" className="text-sm font-medium">
+              Nome da Tarefa *
             </Label>
             <Input
-              id="title"
-              value={formData.title}
-              onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-              placeholder="Ex: Sistema de notificações em tempo real"
+              id="taskName"
+              value={formData.taskName}
+              onChange={(e) => setFormData({ ...formData, taskName: e.target.value })}
+              placeholder="Digite o nome da tarefa"
               className="w-full"
               required
             />
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="description" className="text-sm font-medium">
-              Descrição Detalhada *
+            <Label htmlFor="client" className="text-sm font-medium">
+              Cliente *
             </Label>
-            <Textarea
-              id="description"
-              value={formData.description}
-              onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-              placeholder="Descreva qual problema sua ideia resolve e como ela funcionaria..."
-              className="w-full min-h-[120px] resize-none"
+            <Input
+              id="client"
+              value={formData.client}
+              onChange={(e) => setFormData({ ...formData, client: e.target.value })}
+              placeholder="Nome do cliente"
+              className="w-full"
               required
             />
+            <p className="text-sm text-muted-foreground">
+              Se solicitação interna preencher com: <strong>INTERNO</strong>
+            </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label htmlFor="department" className="text-sm font-medium">
-                Departamento/Time *
-              </Label>
-              <Select 
-                value={formData.department} 
-                onValueChange={(value) => setFormData({ ...formData, department: value })}
-                required
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Selecione seu departamento" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="vendas">Vendas</SelectItem>
-                  <SelectItem value="marketing">Marketing</SelectItem>
-                  <SelectItem value="produto">Produto</SelectItem>
-                  <SelectItem value="engenharia">Engenharia</SelectItem>
-                  <SelectItem value="design">Design</SelectItem>
-                  <SelectItem value="atendimento">Atendimento ao Cliente</SelectItem>
-                  <SelectItem value="rh">Recursos Humanos</SelectItem>
-                  <SelectItem value="financeiro">Financeiro</SelectItem>
-                  <SelectItem value="operacoes">Operações</SelectItem>
-                  <SelectItem value="outros">Outros</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
+          <div className="space-y-2">
+            <Label htmlFor="link" className="text-sm font-medium">
+              Link *
+            </Label>
+            <Input
+              id="link"
+              type="url"
+              value={formData.link}
+              onChange={(e) => setFormData({ ...formData, link: e.target.value })}
+              placeholder="https://exemplo.com"
+              className="w-full"
+              required
+            />
+            <p className="text-sm text-muted-foreground">
+              Coloque aqui o link da tela que você acessou
+            </p>
+          </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="impact" className="text-sm font-medium">
-                Nível de Impacto Percebido
-              </Label>
-              <Select 
-                value={formData.impact} 
-                onValueChange={(value: any) => setFormData({ ...formData, impact: value })}
+          <div className="space-y-2">
+            <Label htmlFor="evidenceFile" className="text-sm font-medium">
+              Documento de Evidência
+            </Label>
+            <div className="flex items-center justify-center w-full">
+              <label 
+                htmlFor="evidenceFile" 
+                className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-muted-foreground/25 rounded-lg cursor-pointer bg-muted/50 hover:bg-muted/80 transition-colors"
               >
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="low">
-                    <div className="flex items-center gap-2">
-                      <div className="h-2 w-2 rounded-full bg-priority-low-foreground"></div>
-                      Baixo
-                    </div>
-                  </SelectItem>
-                  <SelectItem value="medium">
-                    <div className="flex items-center gap-2">
-                      <div className="h-2 w-2 rounded-full bg-priority-medium-foreground"></div>
-                      Médio
-                    </div>
-                  </SelectItem>
-                  <SelectItem value="high">
-                    <div className="flex items-center gap-2">
-                      <div className="h-2 w-2 rounded-full bg-priority-high-foreground"></div>
-                      Alto
-                    </div>
-                  </SelectItem>
-                </SelectContent>
-              </Select>
+                <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                  {formData.evidenceFile ? (
+                    <>
+                      <FileText className="w-8 h-8 mb-2 text-blue-500" />
+                      <p className="text-sm font-medium text-foreground">
+                        {formData.evidenceFile.name}
+                      </p>
+                      <p className="text-xs text-muted-foreground">
+                        {(formData.evidenceFile.size / 1024 / 1024).toFixed(2)} MB
+                      </p>
+                    </>
+                  ) : (
+                    <>
+                      <Upload className="w-8 h-8 mb-2 text-muted-foreground" />
+                      <p className="mb-2 text-sm text-muted-foreground">
+                        <span className="font-semibold">Clique para fazer upload</span> ou arraste o arquivo
+                      </p>
+                      <p className="text-xs text-muted-foreground">
+                        PNG, JPG, PDF, DOC (MAX. 10MB)
+                      </p>
+                    </>
+                  )}
+                </div>
+                <input 
+                  id="evidenceFile" 
+                  type="file" 
+                  className="hidden" 
+                  onChange={handleFileChange}
+                  accept=".png,.jpg,.jpeg,.pdf,.doc,.docx"
+                />
+              </label>
             </div>
+            <p className="text-sm text-muted-foreground">
+              Upload do arquivo de evidência que futuramente será armazenado no Supabase
+            </p>
           </div>
 
           <div className="flex gap-3 pt-4">
@@ -186,7 +216,7 @@ export function IdeaSubmissionForm({ onClose }: IdeaSubmissionFormProps) {
             <Button
               type="submit"
               disabled={isSubmitting}
-              className="flex-1 bg-gradient-to-r from-monday-blue to-monday-purple hover:opacity-90"
+              className="flex-1 bg-gradient-to-r from-blue-600 to-blue-700 hover:opacity-90"
             >
               {isSubmitting ? (
                 <div className="flex items-center gap-2">
@@ -196,7 +226,7 @@ export function IdeaSubmissionForm({ onClose }: IdeaSubmissionFormProps) {
               ) : (
                 <div className="flex items-center gap-2">
                   <Send className="h-4 w-4" />
-                  Enviar Ideia
+                  Enviar Solicitação
                 </div>
               )}
             </Button>
