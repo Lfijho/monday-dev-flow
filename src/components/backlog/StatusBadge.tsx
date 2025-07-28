@@ -18,8 +18,9 @@ interface TypeBadgeProps {
 }
 
 const statusConfig = {
-  todo: { label: 'A Fazer', bg: 'bg-status-todo', text: 'text-status-todo-foreground' },
-  doing: { label: 'Em Progresso', bg: 'bg-status-doing', text: 'text-status-doing-foreground' },
+  todo: { label: 'Não iniciado', bg: 'bg-status-todo', text: 'text-status-todo-foreground' },
+  doing: { label: 'Em andamento', bg: 'bg-status-doing', text: 'text-status-doing-foreground' },
+  testing: { label: 'Necessário testes', bg: 'bg-status-review', text: 'text-status-review-foreground' },
   review: { label: 'Em Revisão', bg: 'bg-status-review', text: 'text-status-review-foreground' },
   done: { label: 'Concluído', bg: 'bg-status-done', text: 'text-status-done-foreground' },
 };

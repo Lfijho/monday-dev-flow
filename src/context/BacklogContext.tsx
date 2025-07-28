@@ -237,25 +237,31 @@ export function BacklogProvider({ children }: { children: ReactNode }) {
   };
 
   const updateItemStatus = (itemId: string, newStatus: TaskStatus) => {
-    setGroups(prev => prev.map(group => ({
-      ...group,
-      items: group.items.map(item =>
-        item.id === itemId
-          ? { ...item, status: newStatus, updatedAt: new Date().toISOString() }
-          : item
-      )
-    })));
+    setGroups(prev => {
+      const newGroups = prev.map(group => ({
+        ...group,
+        items: group.items.map(item =>
+          item.id === itemId
+            ? { ...item, status: newStatus, updatedAt: new Date().toISOString() }
+            : item
+        )
+      }));
+      return [...newGroups];
+    });
   };
 
   const updateItemAssignee = (itemId: string, newAssignee: string) => {
-    setGroups(prev => prev.map(group => ({
-      ...group,
-      items: group.items.map(item =>
-        item.id === itemId
-          ? { ...item, assignee: newAssignee, updatedAt: new Date().toISOString() }
-          : item
-      )
-    })));
+    setGroups(prev => {
+      const newGroups = prev.map(group => ({
+        ...group,
+        items: group.items.map(item =>
+          item.id === itemId
+            ? { ...item, assignee: newAssignee, updatedAt: new Date().toISOString() }
+            : item
+        )
+      }));
+      return [...newGroups];
+    });
   };
 
   const addComment = (itemId: string, comment: string, author: string = 'Usuário Atual') => {
