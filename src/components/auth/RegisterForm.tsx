@@ -68,7 +68,7 @@ export const RegisterForm = ({ onToggleMode }: RegisterFormProps) => {
       <CardHeader className="space-y-4">
         <div className="flex justify-center">
           <img 
-            src="/lovable-uploads/a74dee3e-cebf-427b-ae78-be9537d82318.png" 
+            src="logo_colorido_decod.png" 
             alt="iiLex Logo" 
             className="h-16 w-auto object-contain"
           />
