@@ -55,8 +55,8 @@ export function BacklogTable({ onItemClick }: BacklogTableProps) {
   };
 
   const getActionButton = (item: BacklogItem) => {
-    // Botão "Mover para Sprint" - aparece em Backlog de Suporte
-    if (item.groupId === 'support-backlog') {
+    // Botão "Mover para Sprint" - aparece em Backlog de Suporte e Novas Ideias
+    if (item.groupId === 'support-backlog' || item.groupId === 'new-ideas') {
       return (
         <Button
           size="sm"
