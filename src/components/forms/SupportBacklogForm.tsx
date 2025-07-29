@@ -94,20 +94,20 @@ export function SupportBacklogForm({ onSuccess, onCancel }: SupportBacklogFormPr
 
   return (
     <div className="min-h-screen bg-background">
-      <div className="max-w-4xl mx-auto p-4 sm:p-6">
+      <div className="max-w-6xl mx-auto p-3 sm:p-4 lg:p-6">
         <div className="bg-card border rounded-lg shadow-sm">
-          <div className="p-6 border-b bg-muted/30">
-            <div className="flex items-center gap-3">
+          <div className="p-4 sm:p-6 border-b bg-muted/30">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
               <img 
                 src="/iilex.png" 
                 alt="iiLex" 
-                className="h-8 w-8"
+                className="h-6 w-6 sm:h-8 sm:w-8 flex-shrink-0"
               />
-              <div>
-                <h2 className="text-2xl font-bold text-foreground">
+              <div className="min-w-0 flex-1">
+                <h2 className="text-lg sm:text-xl lg:text-2xl font-bold text-foreground">
                   Solicitação Backlog Suporte
                 </h2>
-                <p className="text-sm text-muted-foreground mt-1">
+                <p className="text-xs sm:text-sm text-muted-foreground mt-1 break-words">
                   Enviar evidência conforme o padrão do link: 
                   <a 
                     href="https://docs.google.com/document/d/1RMnrG8T7zHdeO7n2EXiW1ketfZyRpzj2WaGK_i4U9is/edit?usp=sharing"
@@ -122,8 +122,8 @@ export function SupportBacklogForm({ onSuccess, onCancel }: SupportBacklogFormPr
             </div>
           </div>
 
-          <div className="p-6">
-            <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="p-4 sm:p-6">
+            <form onSubmit={handleSubmit} className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
               <div className="space-y-2">
                 <Label htmlFor="title" className="text-sm font-medium">
                   Nome da Tarefa *
@@ -205,7 +205,7 @@ export function SupportBacklogForm({ onSuccess, onCancel }: SupportBacklogFormPr
                 </Select>
               </div>
 
-              <div className="md:col-span-2 space-y-2">
+              <div className="lg:col-span-2 space-y-2">
                 <Label htmlFor="description" className="text-sm font-medium">
                   Descrição Detalhada *
                 </Label>
@@ -219,7 +219,7 @@ export function SupportBacklogForm({ onSuccess, onCancel }: SupportBacklogFormPr
                 />
               </div>
 
-              <div className="md:col-span-2 space-y-2">
+              <div className="lg:col-span-2 space-y-2">
                 <Label className="text-sm font-medium">
                   Documento de Evidência
                   <a 
@@ -277,7 +277,7 @@ export function SupportBacklogForm({ onSuccess, onCancel }: SupportBacklogFormPr
                 </div>
               </div>
 
-              <div className="md:col-span-2 flex gap-3 pt-4">
+              <div className="lg:col-span-2 flex gap-3 pt-4">
                 <Button
                   type="submit"
                   disabled={isSubmitting}
