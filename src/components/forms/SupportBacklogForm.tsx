@@ -2,9 +2,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useBacklog } from "@/context/BacklogContext";
 import { IdeaSubmission } from "@/types/backlog";
 import { toast } from "sonner";
@@ -29,7 +27,6 @@ export function SupportBacklogForm({ onSuccess, onCancel }: SupportBacklogFormPr
     description: "",
     department: "",
     impact: "medium",
-    ticketId: "",
     link: "",
     evidenceFile: undefined
   });
@@ -38,7 +35,7 @@ export function SupportBacklogForm({ onSuccess, onCancel }: SupportBacklogFormPr
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!formData.title.trim() || !formData.description.trim()) {
+    if (!formData.title.trim() || !formData.department.trim() || !formData.link.trim()) {
       toast.error("Por favor, preencha todos os campos obrigatórios");
       return;
     }
@@ -49,10 +46,9 @@ export function SupportBacklogForm({ onSuccess, onCancel }: SupportBacklogFormPr
       // Add item to support backlog group
       addItemFromSupportBacklog({
         title: formData.title,
-        description: formData.description,
+        description: `Cliente: ${formData.department}\nLink: ${formData.link}`,
         department: formData.department,
         impact: formData.impact,
-        ticketId: formData.ticketId,
         link: formData.link,
         evidenceFile: formData.evidenceFile
       });
@@ -65,7 +61,6 @@ export function SupportBacklogForm({ onSuccess, onCancel }: SupportBacklogFormPr
         description: "",
         department: "",
         impact: "medium",
-        ticketId: "",
         link: "",
         evidenceFile: undefined
       });
@@ -170,56 +165,16 @@ export function SupportBacklogForm({ onSuccess, onCancel }: SupportBacklogFormPr
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="ticketId" className="text-sm font-medium">
-              Número do chamado - Movidesk
-            </Label>
-            <Input
-              id="ticketId"
-              value={formData.ticketId}
-              onChange={(e) => setFormData(prev => ({ ...prev, ticketId: e.target.value }))}
-              placeholder="Ex: 4444"
-              className="w-full"
-            />
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="impact" className="text-sm font-medium">
-              Nível de Impacto
-            </Label>
-            <Select 
-              value={formData.impact} 
-              onValueChange={(value: "low" | "medium" | "high") => 
-                setFormData(prev => ({ ...prev, impact: value }))
-              }
-            >
-              <SelectTrigger>
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="low">Baixo</SelectItem>
-                <SelectItem value="medium">Médio</SelectItem>
-                <SelectItem value="high">Alto</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="description" className="text-sm font-medium">
-              Descrição Detalhada *
-            </Label>
-            <Textarea
-              id="description"
-              value={formData.description}
-              onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
-              placeholder="Descreva detalhadamente o problema, reprodução, impacto nos usuários..."
-              rows={4}
-              required
-            />
-          </div>
-
-          <div className="space-y-2">
             <Label htmlFor="evidenceFile" className="text-sm font-medium">
               Documento de Evidência
+              <a 
+                href="https://docs.google.com/document/d/1RMnrG8T7zHdeO7n2EXiW1ketfZyRpzj2WaGK_i4U9is/edit?usp=sharing" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-primary hover:text-primary/80 underline ml-1"
+              >
+                (Ver padrão de evidência)
+              </a>
             </Label>
             <div className="flex items-center justify-center w-full">
               <label 
