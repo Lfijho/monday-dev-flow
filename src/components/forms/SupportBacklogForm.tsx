@@ -117,7 +117,7 @@ export function SupportBacklogForm({ onSuccess, onCancel }: SupportBacklogFormPr
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="space-y-2">
             <Label htmlFor="title" className="text-sm font-medium">
-              Nome da Tarefa *
+              Nome da Tarefa | Incluir número do chamado *
             </Label>
             <Input
               id="title"
