@@ -2,8 +2,9 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
-import { Users, Settings as SettingsIcon, ChevronRight } from "lucide-react";
+import { Users, Settings as SettingsIcon, ChevronRight, ArrowLeft } from "lucide-react";
 import { TeamManagement } from "@/components/settings/TeamManagement";
+import { useNavigate } from "react-router-dom";
 
 type SettingsTab = 'teams' | 'general' | 'permissions';
 
@@ -30,6 +31,7 @@ const settingsMenuItems = [
 
 export default function Settings() {
   const [activeTab, setActiveTab] = useState<SettingsTab>('teams');
+  const navigate = useNavigate();
 
   const renderContent = () => {
     switch (activeTab) {
@@ -65,10 +67,22 @@ export default function Settings() {
       {/* Menu lateral de configurações */}
       <div className="w-80 border-r border-border bg-card">
         <div className="p-6 border-b border-border">
-          <h1 className="text-2xl font-bold text-foreground">Configurações</h1>
-          <p className="text-muted-foreground mt-1">
-            Gerencie as configurações da plataforma
-          </p>
+          <div className="flex items-center gap-4 mb-4">
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => navigate("/")}
+              className="hover:bg-accent"
+            >
+              <ArrowLeft className="h-4 w-4" />
+            </Button>
+            <div>
+              <h1 className="text-2xl font-bold text-foreground">Configurações</h1>
+              <p className="text-muted-foreground mt-1">
+                Gerencie as configurações da plataforma
+              </p>
+            </div>
+          </div>
         </div>
         
         <div className="p-4 space-y-2">
