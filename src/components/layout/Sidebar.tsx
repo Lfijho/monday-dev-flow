@@ -15,6 +15,7 @@ import { useBacklog } from "@/context/BacklogContext";
 import { useAuth } from "@/context/AuthContext";
 import { useToast } from "@/hooks/use-toast";
 import { ViewMode } from "@/types/backlog";
+import { useNavigate } from "react-router-dom";
 
 const viewModes: { key: ViewMode; label: string; icon: React.ReactNode }[] = [
   { key: 'table', label: 'Tabela', icon: <Table2 className="h-4 w-4" /> },
@@ -32,6 +33,7 @@ export function Sidebar({ onOpenIdeaForm, onOpenSupportForm, onOpenFilters }: Si
   const { currentView, setCurrentView } = useBacklog();
   const { user, logout } = useAuth();
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   const handleLogout = () => {
     logout();
@@ -113,7 +115,11 @@ export function Sidebar({ onOpenIdeaForm, onOpenSupportForm, onOpenFilters }: Si
               Buscar Itens
             </Button>
             
-            <Button variant="ghost" className="w-full justify-start">
+            <Button 
+              variant="ghost" 
+              className="w-full justify-start"
+              onClick={() => navigate('/settings')}
+            >
               <Settings className="h-4 w-4 mr-2" />
               Configurações
             </Button>
