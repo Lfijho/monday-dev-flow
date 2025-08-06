@@ -6,23 +6,23 @@ import { Users, Settings as SettingsIcon, ChevronRight, ArrowLeft } from "lucide
 import { TeamManagement } from "@/components/settings/TeamManagement";
 import { useNavigate } from "react-router-dom";
 
-type SettingsTab = 'teams' | 'general' | 'permissions';
+// Settings tabs: 'teams' | 'general' | 'permissions'
 
 const settingsMenuItems = [
   {
-    key: 'teams' as SettingsTab,
+    key: 'teams',
     label: 'Gerenciamento de Equipes',
     icon: <Users className="h-4 w-4" />,
     description: 'Crie e gerencie equipes de trabalho'
   },
   {
-    key: 'general' as SettingsTab,
+    key: 'general',
     label: 'Configurações Gerais',
     icon: <SettingsIcon className="h-4 w-4" />,
     description: 'Configurações básicas do sistema'
   },
   {
-    key: 'permissions' as SettingsTab,
+    key: 'permissions',
     label: 'Permissões',
     icon: <SettingsIcon className="h-4 w-4" />,
     description: 'Gerencie permissões e acessos'
@@ -30,7 +30,7 @@ const settingsMenuItems = [
 ];
 
 export default function Settings() {
-  const [activeTab, setActiveTab] = useState<SettingsTab>('teams');
+  const [activeTab, setActiveTab] = useState('teams');
   const navigate = useNavigate();
 
   const renderContent = () => {
