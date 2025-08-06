@@ -30,7 +30,7 @@ function BacklogPlatformContent() {
             <div className="text-center">
               <Calendar className="h-12 w-12 mx-auto mb-4" />
               <h3 className="text-lg font-medium mb-2">Visão Calendário</h3>
-              <p>Em desenvolvimento - Aqui serão exibidas as tarefas em formato de calendário</p>
+              <p>Em desenvolvimento - Aqui serão exibidas as tarefas em formato de calendário </p>
             </div>
           </div>
         );
