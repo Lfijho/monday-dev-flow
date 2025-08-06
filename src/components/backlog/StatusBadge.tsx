@@ -1,5 +1,21 @@
 import { Badge } from "@/components/ui/badge";
+import { TaskStatus, TaskPriority, TaskType } from "@/types/backlog";
 import { cn } from "@/lib/utils";
+
+interface StatusBadgeProps {
+  status: TaskStatus;
+  className?: string;
+}
+
+interface PriorityBadgeProps {
+  priority: TaskPriority;
+  className?: string;
+}
+
+interface TypeBadgeProps {
+  type: TaskType;
+  className?: string;
+}
 
 const statusConfig = {
   todo: { label: 'Não iniciado', bg: 'bg-status-todo', text: 'text-status-todo-foreground' },
@@ -23,7 +39,7 @@ const typeConfig = {
   'technical-debt': { label: 'Débito Técnico', bg: 'bg-orange-100', text: 'text-orange-700' },
 };
 
-export function StatusBadge({ status, className }) {
+export function StatusBadge({ status, className }: StatusBadgeProps) {
   const config = statusConfig[status];
   
   return (
@@ -33,7 +49,7 @@ export function StatusBadge({ status, className }) {
   );
 }
 
-export function PriorityBadge({ priority, className }) {
+export function PriorityBadge({ priority, className }: PriorityBadgeProps) {
   const config = priorityConfig[priority];
   
   return (
@@ -43,7 +59,7 @@ export function PriorityBadge({ priority, className }) {
   );
 }
 
-export function TypeBadge({ type, className }) {
+export function TypeBadge({ type, className }: TypeBadgeProps) {
   const config = typeConfig[type];
   
   return (

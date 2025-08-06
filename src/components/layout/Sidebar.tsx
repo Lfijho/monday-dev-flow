@@ -14,15 +14,22 @@ import {
 import { useBacklog } from "@/context/BacklogContext";
 import { useAuth } from "@/context/AuthContext";
 import { useToast } from "@/hooks/use-toast";
+import { ViewMode } from "@/types/backlog";
 import { useNavigate } from "react-router-dom";
 
-const viewModes = [
+const viewModes: { key: ViewMode; label: string; icon: React.ReactNode }[] = [
   { key: 'table', label: 'Tabela', icon: <Table2 className="h-4 w-4" /> },
   { key: 'kanban', label: 'Kanban', icon: <LayoutGrid className="h-4 w-4" /> },
   { key: 'calendar', label: 'Calendário', icon: <Calendar className="h-4 w-4" /> },
 ];
 
-export function Sidebar({ onOpenIdeaForm, onOpenSupportForm, onOpenFilters }) {
+interface SidebarProps {
+  onOpenIdeaForm: () => void;
+  onOpenSupportForm: () => void;
+  onOpenFilters: () => void;
+}
+
+export function Sidebar({ onOpenIdeaForm, onOpenSupportForm, onOpenFilters }: SidebarProps) {
   const { currentView, setCurrentView } = useBacklog();
   const { user, logout } = useAuth();
   const { toast } = useToast();

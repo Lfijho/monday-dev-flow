@@ -1,7 +1,11 @@
 import { Navigate } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
 
-export const ProtectedRoute = ({ children }) => {
+interface ProtectedRouteProps {
+  children: React.ReactNode;
+}
+
+export const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
   const { isAuthenticated, isLoading } = useAuth();
 
   if (isLoading) {
