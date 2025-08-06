@@ -8,7 +8,6 @@ import { IdeaSubmissionForm } from "./forms/IdeaSubmissionForm";
 import { SupportBacklogForm } from "./forms/SupportBacklogForm";
 import { ItemDetailModal } from "./modals/ItemDetailModal";
 import { BacklogProvider, useBacklog } from "@/context/BacklogContext";
-import { BacklogItem } from "@/types/backlog";
 import { Calendar, BarChart3 } from "lucide-react";
 
 function BacklogPlatformContent() {
@@ -16,7 +15,7 @@ function BacklogPlatformContent() {
   const [isIdeaFormOpen, setIsIdeaFormOpen] = useState(false);
   const [isSupportFormOpen, setIsSupportFormOpen] = useState(false);
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
-  const [selectedItem, setSelectedItem] = useState<BacklogItem | null>(null);
+  const [selectedItem, setSelectedItem] = useState(null);
 
   const renderCurrentView = () => {
     switch (currentView) {

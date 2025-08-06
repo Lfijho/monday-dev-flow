@@ -1,42 +1,9 @@
-import React, { createContext, useContext, useState, ReactNode } from 'react';
-import { BacklogGroup, BacklogItem, FilterState, ViewMode, IdeaSubmission, TaskStatus } from '@/types/backlog';
+import { createContext, useContext, useState } from 'react';
 
+// BacklogContext provides backlog state and management
+const BacklogContext = createContext(undefined);
 
-export interface Comment {
-  id: string;
-  author: string;
-  content: string;
-  createdAt: string;
-}
-
-
-export interface CustomBacklogItem extends BacklogItem {
-  tags?: string[];
-  softDeleted?: boolean; 
-}
-
-
-interface BacklogContextType {
-  groups: BacklogGroup[];
-  setGroups: React.Dispatch<React.SetStateAction<BacklogGroup[]>>;
-  currentView: ViewMode;
-  setCurrentView: (view: ViewMode) => void;
-  filters: FilterState;
-  setFilters: React.Dispatch<React.SetStateAction<FilterState>>;
-  addItemFromIdea: (idea: IdeaSubmission) => void;
-  addItemFromSupportBacklog: (submission: any) => void;
-  updateItemStatus: (itemId: string, newStatus: TaskStatus) => void;
-  updateItemAssignee: (itemId: string, newAssignee: string) => void;
-  addComment: (itemId: string, comment: string, author: string) => void;
-  updateItem: (itemId: string, updates: Partial<BacklogItem>) => void;
-  deleteItem: (itemId: string, softDelete?: boolean) => void;
-  moveItemToGroup: (itemId: string, targetGroupId: string, newStatus?: TaskStatus) => void;
-}
-
-const BacklogContext = createContext<BacklogContextType | undefined>(undefined);
-
-
-const initialGroups: BacklogGroup[] = [
+const initialGroups = [
   {
     id: 'new-ideas',
     title: 'Novas Ideias (Features e Upsells)',
@@ -121,7 +88,7 @@ const initialGroups: BacklogGroup[] = [
         id: 'DONE-301',
         title: 'Corrigir falha de autenticação SSH em servidor de homologação',
         description: 'A chave `pem-server-homolog.pem` estava com permissões incorretas (chmod) e no diretório errado. Documentado o procedimento correto para a equipe de suporte.',
-        assignee: 'Gustavo', // Infra
+        assignee: 'Gustavo',
         status: 'done',
         priority: 'high',
         type: 'technical-debt',
@@ -137,21 +104,21 @@ const initialGroups: BacklogGroup[] = [
   }
 ];
 
-export function BacklogProvider({ children }: { children: ReactNode }) {
-  const [groups, setGroups] = useState<BacklogGroup[]>(initialGroups);
-  const [currentView, setCurrentView] = useState<ViewMode>('table');
-  const [filters, setFilters] = useState<FilterState>({});
+export function BacklogProvider({ children }) {
+  const [groups, setGroups] = useState(initialGroups);
+  const [currentView, setCurrentView] = useState('table');
+  const [filters, setFilters] = useState({});
 
-  const addItemFromIdea = (idea: IdeaSubmission) => {
+  const addItemFromIdea = (idea) => {
     const sanitizedDescription = idea.description.replace(/[➢✔➔]/g, ''); 
 
-    const newItem: BacklogItem = {
+    const newItem = {
       id: Date.now().toString(),
       title: idea.title,
       description: sanitizedDescription,
       assignee: undefined,
       status: 'todo',
-      priority: idea.impact as any,
+      priority: idea.impact,
       type: 'feature',
       groupId: 'new-ideas',
       createdAt: new Date().toISOString(),
@@ -173,14 +140,14 @@ export function BacklogProvider({ children }: { children: ReactNode }) {
     ));
   };
 
-  const addItemFromSupportBacklog = (submission: any) => {
-    const newItem: BacklogItem = {
+  const addItemFromSupportBacklog = (submission) => {
+    const newItem = {
       id: `SUPP-${Date.now()}`,
       title: submission.title,
       description: submission.description,
       assignee: undefined,
       status: 'todo',
-      priority: submission.impact as any,
+      priority: submission.impact,
       type: 'bug',
       groupId: 'support-backlog',
       createdAt: new Date().toISOString(),
@@ -202,9 +169,9 @@ export function BacklogProvider({ children }: { children: ReactNode }) {
     ));
   };
 
-  const moveItemToGroup = (itemId: string, targetGroupId: string, newStatus?: TaskStatus) => {
+  const moveItemToGroup = (itemId, targetGroupId, newStatus) => {
     setGroups(prev => {
-      let itemToMove: BacklogItem | null = null;
+      let itemToMove = null;
       
       // Find and remove item from current group
       const updatedGroups = prev.map(group => ({
@@ -227,7 +194,7 @@ export function BacklogProvider({ children }: { children: ReactNode }) {
       if (itemToMove) {
         return updatedGroups.map(group =>
           group.id === targetGroupId
-            ? { ...group, items: [itemToMove!, ...group.items] }
+            ? { ...group, items: [itemToMove, ...group.items] }
             : group
         );
       }
@@ -236,7 +203,7 @@ export function BacklogProvider({ children }: { children: ReactNode }) {
     });
   };
 
-  const updateItemStatus = (itemId: string, newStatus: TaskStatus) => {
+  const updateItemStatus = (itemId, newStatus) => {
     setGroups(prev => {
       const newGroups = prev.map(group => ({
         ...group,
@@ -250,7 +217,7 @@ export function BacklogProvider({ children }: { children: ReactNode }) {
     });
   };
 
-  const updateItemAssignee = (itemId: string, newAssignee: string) => {
+  const updateItemAssignee = (itemId, newAssignee) => {
     setGroups(prev => {
       const newGroups = prev.map(group => ({
         ...group,
@@ -264,8 +231,7 @@ export function BacklogProvider({ children }: { children: ReactNode }) {
     });
   };
 
-  const addComment = (itemId: string, comment: string, author: string = 'Usuário Atual') => {
-   
+  const addComment = (itemId, comment, author = 'Usuário Atual') => {
     const newComment = {
       id: Date.now().toString(),
       author,
@@ -287,7 +253,7 @@ export function BacklogProvider({ children }: { children: ReactNode }) {
     })));
   };
 
-  const updateItem = (itemId: string, updates: Partial<BacklogItem>) => {
+  const updateItem = (itemId, updates) => {
     setGroups(prev => prev.map(group => ({
       ...group,
       items: group.items.map(item =>
@@ -298,10 +264,9 @@ export function BacklogProvider({ children }: { children: ReactNode }) {
     })));
   };
 
-  const deleteItem = (itemId: string, softDelete: boolean = true) => {
-    
+  const deleteItem = (itemId, softDelete = true) => {
     if (softDelete) {
-        updateItem(itemId, { softDeleted: true } as Partial<BacklogItem>);
+        updateItem(itemId, { softDeleted: true });
     } else {
         // Hard delete
         setGroups(prev => prev.map(group => ({
@@ -310,7 +275,6 @@ export function BacklogProvider({ children }: { children: ReactNode }) {
         })));
     }
   };
-
 
   return (
     <BacklogContext.Provider value={{
@@ -337,7 +301,6 @@ export function BacklogProvider({ children }: { children: ReactNode }) {
 export function useBacklog() {
   const context = useContext(BacklogContext);
   if (context === undefined) {
-   
     throw new Error('useBacklog must be used within a BacklogProvider');
   }
   return context;
