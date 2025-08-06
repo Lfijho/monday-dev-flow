@@ -60,7 +60,7 @@ function BacklogPlatformContent() {
                 {currentView === 'calendar' && 'Calendário'}
               </h1>
               <p className="text-muted-foreground mt-1">
-                Gerencie seu backlog de desenvolvimento de forma visual e colaborativa
+                Gerencie seu backlog de desenvolvimento
               </p>
             </div>
             
